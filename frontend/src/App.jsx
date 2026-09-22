@@ -3,7 +3,8 @@ import Header from './components/Header';
 import TranslatorPage from './pages/TranslatorPage';
 import HistoryPage from './pages/HistoryPage';
 import SettingsPage from './pages/SettingsPage';
-import { checkHealth, getLanguages } from './services/api';
+import { checkHealth, getLanguages, API_BASE_URL } from './services/api';
+import { AlertCircle } from 'lucide-react';
 
 const DEFAULT_SETTINGS = {
   defaultSourceLang: 'en',
@@ -57,6 +58,8 @@ export default function App() {
     setSettings(prev => ({ ...prev, ...newPartialSettings }));
   };
 
+  const isOffline = backendStatus?.status !== 'ok';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header
@@ -64,6 +67,26 @@ export default function App() {
         setActiveTab={setActiveTab}
         backendStatus={backendStatus}
       />
+
+      {isOffline && (
+        <div style={{
+          backgroundColor: 'rgba(239, 68, 68, 0.15)',
+          borderBottom: '1px solid rgba(239, 68, 68, 0.3)',
+          color: '#fca5a5',
+          padding: '0.65rem 1rem',
+          fontSize: '0.85rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          textAlign: 'center'
+        }}>
+          <AlertCircle size={16} style={{ flexShrink: 0 }} />
+          <span>
+            <b>Backend Offline:</b> Deployed site is configured to connect to <code>{API_BASE_URL}</code>. Deploy your backend on <b>Render</b> and set environment variable <code>VITE_API_URL</code> on Netlify to your Render backend URL.
+          </span>
+        </div>
+      )}
 
       <main className="app-container">
         {activeTab === 'translator' && (

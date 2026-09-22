@@ -1,69 +1,68 @@
-# 🚀 Talk2Talk — 100% FREE Deployment Guide (NO Credit Card Required)
+# 🚀 Talk2Talk — 100% FREE Deployment Guide (No Credit Card Required)
 
-This guide shows 3 free platforms where you can deploy **Talk2Talk** online for **100% FREE without entering any credit card or payment details**.
-
----
-
-## 🚫 Why Render Asked For A Card (And How To Avoid It)
-
-Render only asks for a credit card when using the automatic **Blueprint** feature. If you deploy an **Individual Web Service** or use **Hugging Face / Koyeb**, **NO credit card is required at all!**
+This guide shows how to deploy **Talk2Talk** online for **100% FREE without entering any payment or credit card details**, using **Render** and **Netlify**.
 
 ---
 
-## 🌟 METHOD 1: Render Individual Web Service (100% Free — NO Card Required)
+## 💳 Why Render & Netlify (No Credit Card Needed)?
 
-By creating a Web Service directly (instead of a Blueprint), Render will **NOT** ask for any credit card or $1 authorization.
+Vercel sometimes requests a credit card verification for certain account types. **Render** and **Netlify** do **NOT** require any credit card or payment information to host your application for free!
+
+---
+
+## 🌟 Method 1: Deploy Everything on Render (100% Free, 1-Click Setup)
+
+Render can deploy both your FastAPI Backend and React Frontend automatically using the included `render.yaml` configuration.
 
 ### Steps:
 1. Open [Render Dashboard](https://dashboard.render.com).
-2. Click **New +** → **Web Service** *(DO NOT click Blueprint)*.
-3. Connect your GitHub repository `Saikiran-12345/talk2talk`.
-4. Configure settings:
-   - **Name**: `talk2talk`
-   - **Region**: Singapore (or nearest)
-   - **Branch**: `main`
+2. Sign in using your **GitHub account**.
+3. Click **New +** → **Blueprint**.
+4. Select your repository: `Saikiran-12345/talk2talk`.
+5. Render will detect `render.yaml` and create both services:
+   - `talk2talk-backend` (FastAPI Python API)
+   - `talk2talk-frontend` (React Static Site)
+6. Click **Apply**.
+7. Once deployed:
+   - **Backend URL**: `https://talk2talk-backend.onrender.com`
+   - **Frontend URL**: `https://talk2talk-frontend.onrender.com`
+8. In Render Dashboard, click `talk2talk-frontend` → **Environment**, and set:
+   - `VITE_API_URL` = `https://talk2talk-backend.onrender.com/api`
+9. Click **Save Changes** (triggers automatic build).
+
+---
+
+## 🌟 Method 2: Netlify (Frontend) + Render (Backend)
+
+### Step A: Deploy Backend on Render (100% Free, No Credit Card)
+1. Go to [Render Dashboard](https://dashboard.render.com).
+2. Click **New +** → **Web Service**.
+3. Select repository `Saikiran-12345/talk2talk`.
+4. Configure:
+   - **Name**: `talk2talk-backend`
    - **Root Directory**: `backend`
-   - **Runtime**: `Python 3`
    - **Build Command**: `pip install -r requirements.txt`
    - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-   - **Instance Type**: Select **Free**
-5. Add Environment Variables (click Advanced):
-   - `CORS_ORIGINS` = `*`
-   - `DATABASE_URL` = `sqlite:///./talk2talk.db`
-6. Click **Create Web Service**.
-7. Render will build and deploy your app for free without asking for any card! Your public HTTPS URL will be `https://talk2talk.onrender.com`.
+   - **Environment Variables**:
+     - `CORS_ORIGINS` = `*`
+     - `DATABASE_URL` = `sqlite:///./talk2talk.db`
+5. Click **Create Web Service**. Save your Backend URL (`https://talk2talk-backend.onrender.com`).
 
----
-
-## 🌟 METHOD 2: Hugging Face Spaces (100% Free — NO Card Required)
-
-Hugging Face Spaces allows hosting full Docker containers with zero payment details needed.
-
-### Steps:
-1. Open [Hugging Face Spaces](https://huggingface.co/new-space).
-2. Sign up / Log in with your email or GitHub.
-3. Configure Space:
-   - **Space Name**: `talk2talk`
-   - **License**: `mit`
-   - **Select the Space SDK**: Choose **Docker** → **Blank**.
-   - **Space Hardware**: Choose **Free (CPU basic)**.
-4. Click **Create Space**.
-5. Hugging Face will build your `Dockerfile` automatically and give you a public HTTPS URL:
-   - `https://<your-username>-talk2talk.hf.space`
-
----
-
-## 🌟 METHOD 3: Koyeb (100% Free — NO Card Required)
-
-1. Open [Koyeb Dashboard](https://app.koyeb.com).
+### Step B: Deploy Frontend on Netlify (100% Free, No Credit Card)
+1. Go to [Netlify Dashboard](https://app.netlify.com).
 2. Sign in with **GitHub**.
-3. Click **Create Service** → Select **GitHub**.
-4. Choose repository `Saikiran-12345/talk2talk`.
-5. Select **Free** instance type.
-6. Click **Deploy**. Your app will be live at `https://talk2talk.koyeb.app`.
+3. Click **Add new site** → **Import an existing project**.
+4. Select `Saikiran-12345/talk2talk`.
+5. Configure:
+   - **Base directory**: `frontend`
+   - **Build command**: `npm run build`
+   - **Publish directory**: `frontend/dist`
+6. Click **Environment variables** → Add:
+   - `VITE_API_URL` = `https://talk2talk-backend.onrender.com/api`
+7. Click **Deploy talk2talk**.
 
 ---
 
 ## 🎙 Microphone & HTTPS Notice
 
-All three options (Render, Hugging Face, Koyeb) automatically generate valid **HTTPS** SSL certificates. Microphone permissions will work seamlessly on all phones and browsers!
+Both Render and Netlify automatically assign free SSL certificates (`https://`). Microphone access will work seamlessly on all phones and computers!
