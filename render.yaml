@@ -1,0 +1,27 @@
+services:
+  # FastAPI Backend Service
+  - type: web
+    name: talk2talk-backend
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DATABASE_URL
+        value: sqlite:///./talk2talk.db
+      - key: DEFAULT_SOURCE_LANG
+        value: en
+      - key: DEFAULT_TARGET_LANG
+        value: te
+
+  # React Vite Frontend Static Site
+  - type: web
+    name: talk2talk-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
