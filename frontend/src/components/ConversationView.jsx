@@ -2,11 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { Volume2, MessageSquare, Trash2, User } from 'lucide-react';
 
 export default function ConversationView({ conversation, onPlayBubbleAudio, onClearConversation, languages }) {
-  const messagesEndRef = useRef(null);
+  const timelineRef = useRef(null);
 
+  // Scroll only the internal chat box container, keeping the main page position stationary on Person A & B
   useEffect(() => {
-    if (conversation && conversation.length > 0) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (timelineRef.current && conversation && conversation.length > 0) {
+      timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
     }
   }, [conversation]);
 
@@ -53,7 +54,7 @@ export default function ConversationView({ conversation, onPlayBubbleAudio, onCl
         </button>
       </div>
 
-      <div className="chat-timeline">
+      <div className="chat-timeline" ref={timelineRef}>
         {conversation.map((turn, index) => {
           const isPersonA = turn.speaker === 'Person A';
           return (
@@ -95,7 +96,6 @@ export default function ConversationView({ conversation, onPlayBubbleAudio, onCl
             </div>
           );
         })}
-        <div ref={messagesEndRef} />
       </div>
     </div>
   );
